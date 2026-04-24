@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>ONYX</title>
 
   <style>
@@ -16,7 +15,7 @@
 
     body {
       min-height: 100vh;
-      background: #000;
+      background: #020202;
       color: #fff;
       overflow: hidden;
       display: flex;
@@ -29,9 +28,20 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 50% 45%, rgba(255,255,255,0.13), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(255,255,255,0.07), transparent 36%),
-        linear-gradient(180deg, #050505 0%, #000 100%);
+        linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.025) 18%,
+          rgba(255, 255, 255, 0.075) 50%,
+          rgba(255, 255, 255, 0.025) 82%,
+          transparent 100%
+        ),
+        linear-gradient(
+          180deg,
+          #030303 0%,
+          #080808 42%,
+          #020202 100%
+        );
       z-index: -3;
     }
 
@@ -39,141 +49,80 @@
       content: "";
       position: fixed;
       inset: 0;
-      opacity: 0.08;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 65%);
-      z-index: -2;
-    }
-
-    .noise {
-      position: fixed;
-      inset: 0;
+      opacity: 0.045;
       pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       z-index: -1;
     }
 
-    .wrap {
-      width: 100%;
-      padding: 40px 24px;
+    .center-copy {
+      position: relative;
       text-align: center;
-    }
-
-    .content {
-      opacity: 0;
-      transform: translateY(18px) scale(0.98);
-      animation: intro 1.6s cubic-bezier(.16, 1, .3, 1) forwards;
-    }
-
-    .logo {
-      width: 148px;
-      margin-bottom: 28px;
-      filter: drop-shadow(0 0 36px rgba(255,255,255,0.16));
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .eyebrow {
-      font-size: 12px;
-      letter-spacing: 7px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.54);
-      margin-bottom: 18px;
-    }
-
-    .headline {
-      font-size: clamp(38px, 7vw, 86px);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-      font-weight: 600;
-      background: linear-gradient(180deg, #fff 0%, #bdbdbd 48%, #555 100%);
+      font-size: clamp(18px, 2.4vw, 34px);
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      background: linear-gradient(180deg, #ffffff 0%, #b8b8b8 48%, #5f5f5f 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: textIn 1.6s cubic-bezier(.16, 1, .3, 1) forwards;
     }
 
-    .sub {
-      font-size: clamp(14px, 2vw, 18px);
-      line-height: 1.7;
-      font-weight: 300;
-      color: rgba(255,255,255,0.48);
-      max-width: 520px;
-      margin: 0 auto;
-    }
-
-    .footer {
+    .bottom-logo {
       position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 28px;
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.28);
+      left: 50%;
+      bottom: 42px;
+      width: 54px;
+      transform: translateX(-50%);
+      opacity: 0;
+      filter: drop-shadow(0 0 24px rgba(255,255,255,0.16));
+      animation:
+        logoIn 1.5s cubic-bezier(.16, 1, .3, 1) 0.7s forwards,
+        floatLogo 5.5s ease-in-out 2s infinite;
     }
 
-    @keyframes intro {
+    @keyframes textIn {
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
-    @keyframes float {
+    @keyframes logoIn {
+      to {
+        opacity: 0.72;
+      }
+    }
+
+    @keyframes floatLogo {
       0%, 100% {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
       }
       50% {
-        transform: translateY(-8px);
+        transform: translateX(-50%) translateY(-8px);
       }
     }
 
     @media (max-width: 600px) {
-      .logo {
-        width: 118px;
+      .center-copy {
+        font-size: 20px;
+        letter-spacing: -0.02em;
       }
 
-      .eyebrow {
-        letter-spacing: 5px;
-        font-size: 11px;
-      }
-
-      .headline {
-        letter-spacing: -0.045em;
-      }
-
-      .sub {
-        font-size: 14px;
-        max-width: 320px;
+      .bottom-logo {
+        width: 44px;
+        bottom: 32px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="noise"></div>
+  <h1 class="center-copy">Engineered for Impact.</h1>
 
-  <main class="wrap">
-    <section class="content">
-      <img class="logo" src="logo.png" alt="ONYX" />
-
-      <div class="eyebrow">COMING SOON</div>
-
-      <h1 class="headline">
-        Engineered<br />
-        for Impact.
-      </h1>
-
-      <p class="sub">
-        ENGINEERED FOR IMPACT
-      </p>
-    </section>
-  </main>
-
-  <div class="footer">© ONYX KOREA</div>
+  <img class="bottom-logo" src="logo.png" alt="ONYX" />
 </body>
 </html>
