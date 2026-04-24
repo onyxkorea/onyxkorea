@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>ONYX</title>
 
   <style>
@@ -9,82 +11,169 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      height: 100vh;
-      background: radial-gradient(circle at center, #111 0%, #000 70%);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
       overflow: hidden;
-      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .container {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255,255,255,0.13), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(255,255,255,0.07), transparent 36%),
+        linear-gradient(180deg, #050505 0%, #000 100%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      opacity: 0.08;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 65%);
+      z-index: -2;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      z-index: -1;
+    }
+
+    .wrap {
+      width: 100%;
+      padding: 40px 24px;
       text-align: center;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
     }
 
-    img {
-      width: 140px;
-      margin-bottom: 24px;
+    .content {
       opacity: 0;
-      transform: translateY(10px);
-      animation: logoIn 1.5s ease forwards;
-      animation-delay: 0.5s;
+      transform: translateY(18px) scale(0.98);
+      animation: intro 1.6s cubic-bezier(.16, 1, .3, 1) forwards;
     }
 
-    h1 {
-      font-size: 13px;
-      letter-spacing: 6px;
+    .logo {
+      width: 148px;
+      margin-bottom: 28px;
+      filter: drop-shadow(0 0 36px rgba(255,255,255,0.16));
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 7px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.54);
+      margin-bottom: 18px;
+    }
+
+    .headline {
+      font-size: clamp(38px, 7vw, 86px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      font-weight: 600;
+      background: linear-gradient(180deg, #fff 0%, #bdbdbd 48%, #555 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 22px;
+    }
+
+    .sub {
+      font-size: clamp(14px, 2vw, 18px);
+      line-height: 1.7;
       font-weight: 300;
-      color: rgba(255,255,255,0.6);
-      opacity: 0;
-      transform: translateY(10px);
-      animation: textIn 1.5s ease forwards;
-      animation-delay: 1.2s;
+      color: rgba(255,255,255,0.48);
+      max-width: 520px;
+      margin: 0 auto;
     }
 
-    /* 애니메이션 */
-    @keyframes fadeIn {
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.28);
+    }
+
+    @keyframes intro {
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
     }
 
-    @keyframes logoIn {
-      to {
-        opacity: 0.9;
+    @keyframes float {
+      0%, 100% {
         transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
       }
     }
 
-    @keyframes textIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
+    @media (max-width: 600px) {
+      .logo {
+        width: 118px;
+      }
+
+      .eyebrow {
+        letter-spacing: 5px;
+        font-size: 11px;
+      }
+
+      .headline {
+        letter-spacing: -0.045em;
+      }
+
+      .sub {
+        font-size: 14px;
+        max-width: 320px;
       }
     }
-
-    /* 마우스 살짝 반응 */
-    body:hover .container {
-      transform: translateY(-2px);
-      transition: 0.6s ease;
-    }
-
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <img src="logo.png" alt="ONYX">
-    <h1>ENGINEERED FOR IMPACT</h1>
-  </div>
+  <div class="noise"></div>
+
+  <main class="wrap">
+    <section class="content">
+      <img class="logo" src="logo.png" alt="ONYX" />
+
+      <div class="eyebrow">COMING SOON</div>
+
+      <h1 class="headline">
+        Engineered<br />
+        for Impact.
+      </h1>
+
+      <p class="sub">
+        ENGINEERED FOR IMPACT
+      </p>
+    </section>
+  </main>
+
+  <div class="footer">© ONYX KOREA</div>
 </body>
 </html>
